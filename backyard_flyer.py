@@ -3,7 +3,6 @@ import time
 from enum import Enum
 
 import numpy as np
-import math
 
 from udacidrone import Drone
 from udacidrone.connection import MavlinkConnection, WebSocketConnection  # noqa: F401
@@ -54,8 +53,8 @@ class BackyardFlyer(Drone):
             longitude = self.local_position[1]
             # altitude = -1.0 * self.local_position[2]
             
-            if (abs(latitude - self.target_position[0]) < 0.1 and 
-                abs(longitude - self.target_position[1]) < 0.1):
+            if (abs(latitude - self.target_position[0]) < 1.0 and 
+                abs(longitude - self.target_position[1]) < 1.0):
                 if self.waypoint_state <= 3:
                     self.waypoint_transition()
                 else:
@@ -135,6 +134,8 @@ class BackyardFlyer(Drone):
         
         if self.waypoint_state < 0 or self.waypoint_state > 3:
             return
+        
+        
         
         self.target_position = self.all_waypoints[self.waypoint_state]
         self.cmd_position(*self.target_position)
